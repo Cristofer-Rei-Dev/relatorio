@@ -1,115 +1,133 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * Generated with the TypeScript template
- * https://github.com/react-native-community/react-native-template-typescript
- *
- * @format
- */
+import * as React from 'react';
+import { StyleSheet, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
+import HomeScreen from './src/pages/Home/HomeScreen';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import LinearGradient from 'react-native-linear-gradient';
+import Report from './src/pages/Report/Report';
+import RegisterTime from './src/pages/RegisterTime/RegisterTime';
+import Study from './src/pages/Study/Study';
+import Lists from './src/pages/Lists/Lists';
+import SettingsScreen from './src/pages/Settings/Settings';
 
- import React from 'react';
- import {
-   SafeAreaView,
-   ScrollView,
-   StatusBar,
-   StyleSheet,
-   Text,
-   useColorScheme,
-   View,
- } from 'react-native';
+const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
- import {
-   Colors,
-   DebugInstructions,
-   Header,
-   LearnMoreLinks,
-   ReloadInstructions,
- } from 'react-native/Libraries/NewAppScreen';
+const TabStack = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Tabs" component={TabBottom} options={{ headerShown: false }} />
+      <Stack.Screen name="Config" component={SettingsScreen} />
+    </Stack.Navigator>
+  )
+}
 
- const Section: React.FC<{
-   title: string;
- }> = ({children, title}) => {
-   const isDarkMode = useColorScheme() === 'dark';
-   return (
-     <View style={styles.sectionContainer}>
-       <Text
-         style={[
-           styles.sectionTitle,
-           {
-             color: isDarkMode ? Colors.white : Colors.black,
-           },
-         ]}>
-         {title}
-       </Text>
-       <Text
-         style={[
-           styles.sectionDescription,
-           {
-             color: isDarkMode ? Colors.light : Colors.dark,
-           },
-         ]}>
-         {children}
-       </Text>
-     </View>
-   );
- };
+const TabBottom = () => {
+  return (
+    <Tab.Navigator
+      initialRouteName={"Home"}
 
- const App = () => {
-   const isDarkMode = useColorScheme() === 'dark';
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ color, size }) => {
+          let iconName: string = "";
 
-   const backgroundStyle = {
-     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-   };
+          switch (route.name) {
+            case 'Home':
+              iconName = 'home';
+              break;
+            case 'Report':
+              iconName = 'insights';
+              break;
+            case 'Study':
+              iconName = 'groups';
+              break;
+            case 'List':
+              iconName = 'phone';
+              break;
+            case 'Config':
+              iconName = 'settings';
+              break;
+            case 'Goals':
+              iconName = 'lightbulb';
+              break;
+            default:
+              iconName = route.name.toLowerCase();
+              break;
+          }
+          // You can return any component that you like here!
+          return <Icon name={iconName} size={size} color={color} />;
+        },
+      })}
 
-   return (
-     <SafeAreaView style={backgroundStyle}>
-       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-       <ScrollView
-         contentInsetAdjustmentBehavior="automatic"
-         style={backgroundStyle}>
-         <Header />
-         <View
-           style={{
-             backgroundColor: isDarkMode ? Colors.black : Colors.white,
-           }}>
-           <Section title="Step One">
-             Edit <Text style={styles.highlight}>App.js</Text> to change this
-             screen and then come back to see your edits.
-           </Section>
-           <Section title="See Your Changes">
-             <ReloadInstructions />
-           </Section>
-           <Section title="Debug">
-             <DebugInstructions />
-           </Section>
-           <Section title="Learn More">
-             Read the docs to discover what to do next:
-           </Section>
-           <LearnMoreLinks />
-         </View>
-       </ScrollView>
-     </SafeAreaView>
-   );
- };
+      tabBarOptions={{
+        tabStyle: styles.tabsStyle,
+        activeTintColor: 'tomato',
+        inactiveTintColor: 'gray',
+        showLabel: false,
+        style: styles.tabs,
+      }}
+    >
+      <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="Report" component={Report} />
+      <Tab.Screen
+        name="RegisterTime"
+        component={RegisterTime}
+        options={() => ({
+          tabBarIcon: () => (
+            <View style={{ marginBottom: '30%' }}>
+              <LinearGradient
+                style={styles.iconTabRound}
+                start={{ x: 0, y: 1 }}
+                end={{ x: 0, y: 0 }}
+                colors={['#D500F9', '#4A148C']}
+              >
+                <Icon name="add" size={26} color='#FFF' />
+              </LinearGradient>
+            </View>
+          ),
+        })}
+      />
+      <Tab.Screen name="Study" component={Study} />
+      <Tab.Screen name="List" component={Lists} />
+    </Tab.Navigator>
+  );
+}
 
- const styles = StyleSheet.create({
-   sectionContainer: {
-     marginTop: 32,
-     paddingHorizontal: 24,
-   },
-   sectionTitle: {
-     fontSize: 24,
-     fontWeight: '600',
-   },
-   sectionDescription: {
-     marginTop: 8,
-     fontSize: 18,
-     fontWeight: '400',
-   },
-   highlight: {
-     fontWeight: '700',
-   },
- });
+const App = () => {
+  return (
+    <NavigationContainer>
+      <TabStack />
+    </NavigationContainer >
+  );
+};
 
- export default App;
+export default App;
+
+const styles = StyleSheet.create({
+  tabs: {
+    borderTopWidth: 0,
+  },
+  tabsStyle: {
+    backgroundColor: '#161b33',
+  },
+  iconTabRound: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    marginBottom: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 6,
+    shadowColor: '#9C27B0',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+  },
+  hidden: {
+    height: 0,
+    width: 0,
+  }
+});
