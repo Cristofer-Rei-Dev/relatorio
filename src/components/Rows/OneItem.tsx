@@ -7,14 +7,14 @@ interface iOneItemProps {
     icon?: string;
     text?: string;
     onPress?: CallableFunction;
+    paragraphProps?: any;
 }
 
 const OneItem: React.FunctionComponent<iOneItemProps> = (props) => {
-    const style = {};
     return (
         <PaddingContainer style={{ flexDirection: 'row' }}>
             <BoxList isFullSized={true} style={{ marginRight: 10 }}>
-                <Paragraph>
+                <Paragraph {...props.paragraphProps}>
                     {props.text || props.children}
                 </Paragraph>
             </BoxList>

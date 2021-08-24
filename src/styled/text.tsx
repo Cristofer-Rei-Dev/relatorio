@@ -9,7 +9,11 @@ export const SubTitle = styled.Text`
     font-size: 22px;
 `;
 
-export const Paragraph = styled.Text`
+interface iParagraph {
+    fontSize: number
+}
+
+export const Paragraph = styled.Text<iParagraph>`
     color: #ffffff;
-    font-size: 16px;
+    font-size: ${(props) => props.fontSize || 16}px;
 `;

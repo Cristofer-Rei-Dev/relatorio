@@ -5,6 +5,7 @@ import { Paragraph, Title } from '../../styled/text';
 import TwoItens from '../../components/Rows/TwoItens';
 import OneItem from '../../components/Rows/OneItem';
 import { useNavigation } from '@react-navigation/native';
+import { Text } from 'react-native-svg';
 
 function HomeScreen() {
     const nav = useNavigation();
